@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-
+from sqlalchemy import func
 from app.models.hcp import HCP
 from app.schemas.hcp import HCPCreate, HCPUpdate
 
@@ -55,3 +55,10 @@ def delete_hcp(db: Session, hcp_id: int):
     db.commit()
 
     return hcp
+
+def get_hcp_by_name(db: Session, name: str):
+    return (
+        db.query(HCP)
+        .filter(func.lower(HCP.name) == func.lower(name))
+        .first()
+    )

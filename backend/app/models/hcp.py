@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String
 
 from app.database.connection import Base
+from sqlalchemy.orm import relationship
 
 
 class HCP(Base):
@@ -19,3 +20,9 @@ class HCP(Base):
     email = Column(String(150))
 
     phone = Column(String(20))
+
+    interactions = relationship(
+    "Interaction",
+    back_populates="hcp",
+    cascade="all, delete-orphan"
+)
