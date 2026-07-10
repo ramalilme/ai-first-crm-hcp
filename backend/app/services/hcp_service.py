@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.models.hcp import HCP
-from app.schemas.hcp import HCPCreate
+from app.schemas.hcp import HCPCreate, HCPUpdate
 
 
 def create_hcp(db: Session, hcp: HCPCreate):
@@ -19,3 +19,39 @@ def create_hcp(db: Session, hcp: HCPCreate):
     db.refresh(new_hcp)
 
     return new_hcp
+
+def get_all_hcps(db: Session):
+    return db.query(HCP).all()
+
+def get_hcp_by_id(db: Session, hcp_id: int):
+    return db.query(HCP).filter(HCP.id == hcp_id).first()
+
+def update_hcp(db: Session, hcp_id: int, hcp_data: HCPUpdate):
+    hcp = db.query(HCP).filter(HCP.id == hcp_id).first()
+
+    if not hcp:
+        return None
+
+    hcp.name = hcp_data.name
+    hcp.specialization = hcp_data.specialization
+    hcp.hospital = hcp_data.hospital
+    hcp.city = hcp_data.city
+    hcp.email = hcp_data.email
+    hcp.phone = hcp_data.phone
+
+    db.commit()
+    db.refresh(hcp)
+
+    return hcp
+
+
+def delete_hcp(db: Session, hcp_id: int):
+    hcp = db.query(HCP).filter(HCP.id == hcp_id).first()
+
+    if not hcp:
+        return None
+
+    db.delete(hcp)
+    db.commit()
+
+    return hcp
