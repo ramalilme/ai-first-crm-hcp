@@ -14,11 +14,19 @@ def edit_interaction_node(state: CRMState):
     try:
         extraction = extract_edit(state["user_input"])
 
-        doctor = get_hcp_by_name(db, extraction.doctor_name)
+        doctor = None
+
+        if extraction.doctor_name:
+            doctor = get_hcp_by_name(db, extraction.doctor_name)
+        elif state.get("hcp_id"):
+            class _Doctor:
+                def __init__(self, id):
+                    self.id = id
+            doctor = _Doctor(state["hcp_id"])
 
         if not doctor:
             state["success"] = False
-            state["message"] = "HCP not found"
+            state["message"] = "Please specify which doctor's interaction to edit."
             return state
 
         interaction = get_latest_interaction_for_hcp(db, doctor.id)
@@ -35,6 +43,8 @@ def edit_interaction_node(state: CRMState):
         )
 
         state["interaction"] = interaction
+        state["hcp_id"] = doctor.id
+        state["extraction"] = extraction
         state["success"] = True
         state["message"] = f"Interaction #{interaction.id} updated successfully."
 

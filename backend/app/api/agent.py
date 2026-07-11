@@ -21,23 +21,62 @@ def chat(request: AgentRequest):
     }
 
     result = crm_graph.invoke(state)
+    extraction = result.get("extraction")
 
     return AgentResponse(
     success=result["success"],
     message=result["message"],
+    intent=result["intent"],
 
-    hcp_id=result["hcp_id"],
+    doctor_name=(
+        extraction.doctor_name
+        if extraction else None
+    ),
 
-    doctor_name=result["extraction"].doctor_name,
-    interaction_type=result["extraction"].interaction_type,
-    summary=result["extraction"].summary,
+    interaction_type=(
+        extraction.interaction_type
+        if extraction else None
+    ),
 
-    attendees=result["extraction"].attendees,
-    materials_shared=result["extraction"].materials_shared,
-    samples_distributed=result["extraction"].samples_distributed,
-    sentiment=result["extraction"].sentiment,
-    outcomes=result["extraction"].outcomes,
-    follow_up_actions=result["extraction"].follow_up_actions,
+    summary=(
+        extraction.summary
+        if extraction else None
+    ),
 
-    follow_up_date=result["extraction"].follow_up_date,
+    attendees=(
+        extraction.attendees
+        if extraction else None
+    ),
+
+    materials_shared=(
+        extraction.materials_shared
+        if extraction else None
+    ),
+
+    samples_distributed=(
+        extraction.samples_distributed
+        if extraction else None
+    ),
+
+    sentiment=(
+        extraction.sentiment
+        if extraction else None
+    ),
+
+    outcomes=(
+        extraction.outcomes
+        if extraction else None
+    ),
+
+    follow_up_actions=(
+        extraction.follow_up_actions
+        if extraction else None
+    ),
+
+    follow_up_date=(
+        extraction.follow_up_date
+        if extraction else None
+    ),
+
+    hcp_id=result.get("hcp_id"),
 )

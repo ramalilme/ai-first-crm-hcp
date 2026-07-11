@@ -10,6 +10,7 @@ def extract_node(state: CRMState):
     extraction = extract_interaction(
         state["user_input"]
     )
+    
 
     state["extraction"] = extraction
 

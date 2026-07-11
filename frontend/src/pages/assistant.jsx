@@ -16,6 +16,7 @@ const [outcomes, setOutcomes] = useState("");
 const [followUpActions, setFollowUpActions] = useState("");
   const [prompt, setPrompt] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
+  const [intent, setIntent] = useState("");
 
   async function handleAILog() {
   const userMessage = {
@@ -29,21 +30,54 @@ const [followUpActions, setFollowUpActions] = useState("");
     const response = await api.post("/agent/chat", {
       message: prompt,
     });
+    console.log("AI Response:", response.data);
+
+// If the backend performed an edit, refresh the form from the latest interaction.
+if (response.data.intent === "edit_interaction" && response.data.hcp_id) {
+  try {
+    const interactionsResponse = await api.get("/interaction/");
+
+    const latest = interactionsResponse.data
+      .filter((i) => i.hcp_id === response.data.hcp_id)
+      .sort((a, b) => b.id - a.id)[0];
+
+    if (latest) {
+      setHcpId(latest.hcp_id);
+      setInteractionType(latest.interaction_type || "");
+      setTopics(latest.summary || "");
+      setSentiment(latest.sentiment || "");
+
+      if (latest.interaction_date) {
+        setDate(latest.interaction_date);
+      }
+
+      if (latest.follow_up_date) {
+        setDate(latest.follow_up_date);
+      }
+    }
+  } catch (refreshError) {
+    console.error("Failed to refresh interaction:", refreshError);
+  }
+}
 
     console.log(JSON.stringify(response.data, null, 2));
    
 
-// Auto-fill the form from AI extraction
- setHcpId(response.data.hcp_id);
-setHcpName(response.data.doctor_name || "");
-setInteractionType(response.data.interaction_type || "");
-setTopics(response.data.summary || "");
-setAttendees(response.data.attendees || "");
-setMaterialsShared(response.data.materials_shared || "");
-setSamplesDistributed(response.data.samples_distributed || "");
-setSentiment(response.data.sentiment || "");
-setOutcomes(response.data.outcomes || "");
-setFollowUpActions(response.data.follow_up_actions || "");
+// Set intent and conditionally auto-fill the form if logging an interaction
+setIntent(response.data.intent);
+
+if (response.data.intent === "log_interaction") {
+  setHcpId(response.data.hcp_id);
+  setHcpName(response.data.doctor_name || "");
+  setInteractionType(response.data.interaction_type || "");
+  setTopics(response.data.summary || "");
+  setAttendees(response.data.attendees || "");
+  setMaterialsShared(response.data.materials_shared || "");
+  setSamplesDistributed(response.data.samples_distributed || "");
+  setSentiment(response.data.sentiment || "");
+  setOutcomes(response.data.outcomes || "");
+  setFollowUpActions(response.data.follow_up_actions || "");
+}
 
 // TODO: Backend currently returns values like "in two weeks".
 // The HTML date input only accepts YYYY-MM-DD.
