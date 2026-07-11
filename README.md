@@ -40,3 +40,72 @@ These tools work together to automate CRM tasks while maintaining a clean and in
 - Responsive React-based frontend with an AI Assistant panel
 - FastAPI backend providing RESTful APIs
 - Modern UI styled using the Google Inter font
+
+---
+
+# Tech Stack
+
+## Frontend
+
+- React.js
+- React Router
+- Axios
+- CSS3
+- Google Inter Font
+
+## Backend
+
+- FastAPI
+- SQLAlchemy
+- Pydantic
+- Uvicorn
+
+## Artificial Intelligence
+
+- LangGraph
+- Groq API
+- Llama 3.3 70B Versatile
+- LangChain
+
+## Database
+
+- PostgreSQL
+
+## Development Tools
+
+- Visual Studio Code
+- Git
+- GitHub
+- Postman
+- Swagger UI
+
+---
+
+# System Architecture
+
+The application follows a client-server architecture powered by a LangGraph AI agent.
+
+```
+                User
+                  │
+                  ▼
+        React Frontend (AI Chat)
+                  │
+          REST API (Axios)
+                  │
+                  ▼
+        FastAPI Backend
+                  │
+                  ▼
+          LangGraph Router
+                  │
+    ┌─────────┬──────────┬──────────┬────────────┬────────────┐
+    ▼         ▼          ▼          ▼            ▼
+ Log Tool   Edit Tool  Search HCP  Summarize   Follow-up
+                                           Recommendation
+                  │
+                  ▼
+          PostgreSQL Database
+```
+
+The React frontend provides an AI-powered conversational interface that communicates with the FastAPI backend. The backend uses LangGraph to classify user intent and route requests to one of five specialized AI tools. Each tool performs a specific CRM operation and interacts with the PostgreSQL database when necessary before returning structured data to the frontend.
