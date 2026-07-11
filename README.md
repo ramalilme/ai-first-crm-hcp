@@ -109,3 +109,149 @@ The application follows a client-server architecture powered by a LangGraph AI a
 ```
 
 The React frontend provides an AI-powered conversational interface that communicates with the FastAPI backend. The backend uses LangGraph to classify user intent and route requests to one of five specialized AI tools. Each tool performs a specific CRM operation and interacts with the PostgreSQL database when necessary before returning structured data to the frontend.
+
+---
+
+# LangGraph AI Agent
+
+The AI Assistant is powered by **LangGraph**, which acts as the orchestration layer for all user requests.
+
+Instead of hardcoding application logic, the LangGraph agent analyzes the user's natural language input, identifies the user's intent using a routing node, and dynamically invokes the appropriate tool. This approach enables the CRM to support conversational workflows while maintaining modularity and extensibility.
+
+Each tool is responsible for a specific CRM operation and updates the shared application state before returning the results to the frontend.
+
+### LangGraph Workflow
+
+```
+User Prompt
+      │
+      ▼
+React AI Assistant
+      │
+      ▼
+FastAPI Backend
+      │
+      ▼
+LangGraph Router
+      │
+      ├──────────────┬──────────────┬──────────────┬──────────────┬──────────────┐
+      ▼              ▼              ▼              ▼              ▼
+Log Interaction   Edit Interaction  Search HCP   Summarize   Follow-up Recommendation
+      │              │              │              │              │
+      └──────────────┴──────────────┴──────────────┴──────────────┘
+                             │
+                             ▼
+                     PostgreSQL Database
+```
+
+The router determines the user's intent and dispatches the request to one of the five specialized tools. Each tool performs its task independently and returns structured data that is displayed by the React frontend.
+
+---
+
+# LangGraph Tools
+
+## 1. Log Interaction Tool
+
+**Purpose**
+
+Captures HCP interaction details from natural language and automatically populates the interaction form.
+
+**Workflow**
+
+- Receives a conversational prompt from the user.
+- Uses the LLM to extract structured information.
+- Identifies the HCP.
+- Detects interaction type.
+- Extracts summary and sentiment.
+- Populates the CRM form automatically.
+
+**Example Prompt**
+
+```
+Today I met Dr. Sarah Johnson and discussed Product X efficacy.
+The meeting was positive and I shared product brochures.
+```
+
+---
+
+## 2. Edit Interaction Tool
+
+**Purpose**
+
+Updates previously extracted interaction information without requiring manual editing of the form.
+
+**Workflow**
+
+- Receives the user's correction.
+- Identifies which fields need modification.
+- Preserves unchanged values.
+- Updates only the requested fields.
+
+**Example Prompt**
+
+```
+Actually the sentiment was Negative and the doctor's name was Dr. John Smith.
+```
+
+---
+
+## 3. Search HCP Tool
+
+**Purpose**
+
+Searches the CRM database for Healthcare Professionals.
+
+**Workflow**
+
+- Extracts the doctor's name.
+- Queries PostgreSQL.
+- Returns matching HCP information.
+- Displays the results in the AI Assistant.
+
+**Example Prompt**
+
+```
+Show Dr. Sarah Johnson
+```
+
+---
+
+## 4. Summarize Interaction Tool
+
+**Purpose**
+
+Retrieves and summarizes the most recent interaction with an HCP.
+
+**Workflow**
+
+- Identifies the requested HCP.
+- Retrieves the latest interaction.
+- Generates a concise interaction summary.
+- Returns the summary to the frontend.
+
+**Example Prompt**
+
+```
+Summarize my interaction with Dr. Sarah Johnson.
+```
+
+---
+
+## 5. Follow-up Recommendation Tool
+
+**Purpose**
+
+Generates AI-assisted follow-up recommendations based on previous HCP interactions.
+
+**Workflow**
+
+- Retrieves the latest interaction.
+- Analyzes interaction context.
+- Generates actionable recommendations using the LLM.
+- Displays recommendations in both the AI chat and the CRM interface.
+
+**Example Prompt**
+
+```
+Recommend follow-up actions for Dr. Sarah Johnson.
+```
