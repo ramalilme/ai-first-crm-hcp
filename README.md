@@ -1,23 +1,42 @@
 # AI-First CRM HCP Module
 
-An AI-powered Customer Relationship Management (CRM) application designed for Healthcare Professionals (HCPs). The system enables medical representatives to log, edit, search, summarize, and generate follow-up recommendations for HCP interactions using natural language.
+An AI-powered Customer Relationship Management (CRM) application designed for Healthcare Professionals (HCPs). The system enables medical representatives to manage HCP interactions using natural language through an intelligent AI assistant instead of manually completing CRM forms.
 
-Instead of manually completing interaction forms, users communicate with an AI Assistant that understands conversational input, extracts structured information using a Large Language Model (LLM), and automatically updates the CRM form.
+The application follows an **AI-first workflow**, where a conversational assistant understands user requests, identifies the intended action using **LangGraph**, and executes the appropriate AI tool. Information extracted from conversations is automatically populated into the CRM interface, providing a faster, more intuitive, and more efficient user experience.
 
-The project is built using **React**, **FastAPI**, **PostgreSQL**, **LangGraph**, and **Groq LLM**, following an AI-first workflow where LangGraph routes user requests to specialized tools.
+This project was developed as part of a technical assessment to demonstrate the integration of **React**, **FastAPI**, **PostgreSQL**, **LangGraph**, and **Groq LLM** into a real-world healthcare CRM use case.
 
 ---
 
-## Project Objective
+# Project Objective
 
-The objective of this project is to demonstrate how AI agents can simplify CRM workflows in the life sciences domain by allowing sales representatives to interact with the system through natural language instead of traditional form-based data entry.
+Traditional CRM systems require users to manually enter interaction details into lengthy forms. This project reimagines that workflow by allowing healthcare representatives to communicate with an AI assistant using natural language.
 
-The application satisfies the assignment requirements by implementing a LangGraph-powered AI agent with five specialized tools:
+The AI assistant analyzes user messages, extracts relevant information, routes requests through LangGraph, and performs CRM operations automatically.
 
-- Log Interaction
-- Edit Interaction
-- Search HCP
-- Summarize Interaction
-- Follow-up Recommendation
+The project implements five LangGraph-powered AI tools:
 
-The AI assistant automatically understands user intent, routes requests to the appropriate LangGraph node, performs the requested operation, and returns structured results to the frontend.
+- 📝 Log Interaction
+- ✏️ Edit Interaction
+- 🔍 Search HCP
+- 📄 Summarize Interaction
+- 💡 Follow-up Recommendation
+
+These tools work together to automate CRM tasks while maintaining a clean and intuitive user interface.
+
+---
+
+# Key Features
+
+- AI-powered conversational interface for managing HCP interactions
+- Automatic extraction of interaction details from natural language
+- Automatic population of CRM forms using AI
+- Intelligent routing of user requests using LangGraph
+- Support for editing previously extracted interaction details
+- Search existing Healthcare Professionals (HCPs)
+- Generate concise summaries of previous interactions
+- AI-generated follow-up recommendations for future engagements
+- PostgreSQL database integration for persistent data storage
+- Responsive React-based frontend with an AI Assistant panel
+- FastAPI backend providing RESTful APIs
+- Modern UI styled using the Google Inter font
