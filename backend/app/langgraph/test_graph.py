@@ -1,15 +1,11 @@
 from app.langgraph.graph import crm_graph
 
 state = {
-    "user_input": """
-    I met Dr. Sarah Johnson today.
-
-    We discussed oncology medication.
-
-    Follow up in two weeks.
-    """,
+    "user_input": "Actually change Dr. Sarah Johnson's sentiment to Negative.",
+    "intent": None,
     "extraction": None,
     "hcp_id": None,
+    "interaction": None,
     "success": False,
     "message": "",
 }

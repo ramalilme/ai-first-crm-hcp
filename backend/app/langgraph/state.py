@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional
+from typing import TypedDict, Optional, Any
 
 from app.schemas.ai import InteractionExtraction
 
@@ -13,3 +13,8 @@ class CRMState(TypedDict):
     success: bool
 
     message: str
+
+    # New fields for the AI Agent
+    intent: Optional[str]
+
+    interaction: Optional[Any]

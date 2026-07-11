@@ -66,3 +66,42 @@ from app.models.interaction import Interaction
 
 def get_interactions(db):
     return db.query(Interaction).all()
+
+
+def get_latest_interaction_for_hcp(db, hcp_id: int):
+    return (
+        db.query(Interaction)
+        .filter(Interaction.hcp_id == hcp_id)
+        .order_by(Interaction.interaction_date.desc(), Interaction.id.desc())
+        .first()
+    )
+
+
+def update_interaction_from_ai(
+    db,
+    interaction,
+    extraction,
+):
+    if extraction.interaction_type is not None:
+        interaction.interaction_type = extraction.interaction_type
+
+    if extraction.summary is not None:
+        interaction.summary = extraction.summary
+
+    if extraction.sentiment is not None:
+        interaction.sentiment = extraction.sentiment
+
+    if extraction.follow_up_date is not None:
+        text = extraction.follow_up_date.lower()
+
+        if "two week" in text:
+            interaction.follow_up_date = date.today() + timedelta(days=14)
+        elif "next week" in text:
+            interaction.follow_up_date = date.today() + timedelta(days=7)
+        elif "tomorrow" in text:
+            interaction.follow_up_date = date.today() + timedelta(days=1)
+
+    db.commit()
+    db.refresh(interaction)
+
+    return interaction

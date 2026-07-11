@@ -40,24 +40,9 @@ def find_hcp_node(state: CRMState):
     return state
 
 def save_interaction_node(state: CRMState):
-
     if not state["success"]:
         return state
 
-    db = SessionLocal()
-
-    try:
-        interaction = create_interaction_from_ai(
-            db=db,
-            hcp_id=state["hcp_id"],
-            extraction=state["extraction"],
-        )
-
-        state["message"] = (
-            f"Interaction #{interaction.id} created successfully."
-        )
-
-    finally:
-        db.close()
+    state["message"] = "Interaction extracted successfully."
 
     return state
