@@ -23,3 +23,4 @@ class AgentResponse(BaseModel):
     follow_up_actions: Optional[str] = None
     follow_up_date: Optional[str] = None
     intent: Optional[str] = None
+    recommendations: list[str] | None = None

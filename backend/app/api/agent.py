@@ -21,6 +21,8 @@ def chat(request: AgentRequest):
     }
 
     result = crm_graph.invoke(state)
+    print(result)
+    
     extraction = result.get("extraction")
 
     return AgentResponse(
@@ -79,4 +81,5 @@ def chat(request: AgentRequest):
     ),
 
     hcp_id=result.get("hcp_id"),
+    recommendations=result.get("recommendations"),
 )

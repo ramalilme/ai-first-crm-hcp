@@ -9,5 +9,5 @@ class IntentClassification(BaseModel):
         "edit_interaction",
         "search_hcp",
         "summarize_interaction",
-        "suggest_follow_up",
+        "followup_recommendation",
     ]

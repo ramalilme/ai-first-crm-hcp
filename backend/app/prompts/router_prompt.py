@@ -9,7 +9,7 @@ log_interaction
 edit_interaction
 search_hcp
 summarize_interaction
-suggest_follow_up
+followup_recommendation
 
 Examples
 
@@ -41,7 +41,17 @@ User:
 "What should I do next?"
 
 Intent:
-suggest_follow_up
+followup_recommendation
+
+
+
+Choose this intent when the user asks for:
+
+- What should I do next?
+- Recommend a follow-up.
+- Suggest next steps.
+- What follow-up do you recommend?
+- How should I follow up with this doctor?
 
 Return ONLY the intent.
 """

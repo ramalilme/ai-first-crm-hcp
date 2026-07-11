@@ -86,9 +86,20 @@ if (response.data.intent === "log_interaction") {
 //   setDate(response.data.follow_up_date);
 // }
 
+let aiText = response.data.message;
+
+if (
+  response.data.intent === "followup_recommendation" &&
+  response.data.recommendations?.length
+) {
+  aiText +=
+    "\n\nRecommended actions:\n• " +
+    response.data.recommendations.join("\n• ");
+}
+
 const aiMessage = {
   sender: "ai",
-  text: response.data.message,
+  text: aiText,
 };
 
 setChatHistory((prev) => [...prev, aiMessage]);

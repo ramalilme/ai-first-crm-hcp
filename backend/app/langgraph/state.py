@@ -4,6 +4,9 @@ from app.schemas.ai import InteractionExtraction
 
 
 class CRMState(TypedDict):
+
+    recommendations: list[str] | None
+    
     user_input: str
 
     extraction: Optional[InteractionExtraction]
@@ -18,3 +21,4 @@ class CRMState(TypedDict):
     intent: Optional[str]
 
     interaction: Optional[Any]
+
