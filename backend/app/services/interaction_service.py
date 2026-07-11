@@ -61,3 +61,8 @@ def create_interaction_from_ai(
     db.refresh(interaction)
 
     return interaction
+
+from app.models.interaction import Interaction
+
+def get_interactions(db):
+    return db.query(Interaction).all()

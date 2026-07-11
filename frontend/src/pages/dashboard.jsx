@@ -4,6 +4,8 @@ import api from "../api/api";
 
 export default function Dashboard() {
   const [hcpCount, setHcpCount] = useState("Loading...");
+  const [interactionCount, setInteractionCount] = useState(0);
+  const [followUpCount, setFollowUpCount] = useState(0);
 
   useEffect(() => {
     async function fetchHCPs() {
@@ -15,7 +17,28 @@ export default function Dashboard() {
       }
     }
 
+    async function fetchInteractions() {
+      try {
+        const response = await api.get("/interaction/");
+
+        setInteractionCount(response.data.length);
+
+        const today = new Date();
+
+        const upcoming = response.data.filter((item) => {
+          if (!item.follow_up_date) return false;
+
+          return new Date(item.follow_up_date) >= today;
+        });
+
+        setFollowUpCount(upcoming.length);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     fetchHCPs();
+    fetchInteractions();
   }, []);
 
   return (
@@ -32,9 +55,9 @@ export default function Dashboard() {
       >
         <StatCard title="Total HCPs" value={hcpCount} />
 
-        <StatCard title="Interactions" value="0" />
+        <StatCard title="Interactions" value={interactionCount} />
 
-        <StatCard title="Follow Ups" value="0" />
+        <StatCard title="Follow Ups" value={followUpCount} />
 
         <StatCard title="AI Notes" value="0" />
       </div>

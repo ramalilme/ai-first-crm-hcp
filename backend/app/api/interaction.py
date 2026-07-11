@@ -6,13 +6,21 @@ from app.schemas.interaction import (
     InteractionCreate,
     InteractionResponse,
 )
-from app.services.interaction_service import create_interaction
+from app.services.interaction_service import (
+    create_interaction,
+    get_interactions,
+)
 
 router = APIRouter(
     prefix="/interaction",
     tags=["Interaction"],
 )
 
+@router.get("/", response_model=list[InteractionResponse])
+def read_interactions(
+    db: Session = Depends(get_db),
+):
+    return get_interactions(db)
 
 @router.post("/", response_model=InteractionResponse)
 def add_interaction(
