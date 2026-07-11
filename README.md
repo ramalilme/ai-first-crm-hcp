@@ -255,3 +255,249 @@ Generates AI-assisted follow-up recommendations based on previous HCP interactio
 ```
 Recommend follow-up actions for Dr. Sarah Johnson.
 ```
+---
+
+# Project Structure
+
+```
+AI-First-CRM-HCP/
+│
+├── backend/
+│   ├── app/
+│   │   ├── api/                    # FastAPI routes
+│   │   ├── config/                 # Application configuration
+│   │   ├── database/               # Database connection
+│   │   ├── langgraph/              # LangGraph workflow
+│   │   │   ├── graph.py
+│   │   │   ├── state.py
+│   │   │   ├── router_node.py
+│   │   │   ├── extractor.py
+│   │   │   ├── followup_node.py
+│   │   │   ├── summarize_node.py
+│   │   │   ├── search_node.py
+│   │   │   └── edit_nodes.py
+│   │   ├── models/                 # SQLAlchemy models
+│   │   ├── prompts/                # LLM prompts
+│   │   ├── schemas/                # Pydantic schemas
+│   │   ├── services/               # Business logic
+│   │   └── main.py                 # FastAPI entry point
+│   │
+│   ├── requirements.txt
+│   └── README.md
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── styles/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   │
+│   ├── package.json
+│   └── vite.config.js
+│
+├── screenshots/
+│
+├── docs/
+│
+├── README.md
+│
+└── .gitignore
+```
+
+---
+
+# Project Workflow
+
+The application follows an AI-first workflow where users interact exclusively through the AI Assistant instead of manually filling CRM forms.
+
+### Step 1 — User Interaction
+
+The user enters a natural language prompt into the AI Assistant.
+
+Example:
+
+```
+Today I met Dr. Sarah Johnson.
+We discussed Product X.
+The sentiment was positive and I shared brochures.
+```
+
+---
+
+### Step 2 — Intent Detection
+
+The request is sent to the FastAPI backend.
+
+The LangGraph Router analyzes the prompt and determines which tool should process it.
+
+---
+
+### Step 3 — Tool Execution
+
+Depending on the detected intent, one of the five LangGraph tools executes.
+
+Examples include:
+
+- Log Interaction
+- Edit Interaction
+- Search HCP
+- Summarize Interaction
+- Follow-up Recommendation
+
+---
+
+### Step 4 — Database Operations
+
+When required, the selected tool retrieves or stores data in the PostgreSQL database.
+
+---
+
+### Step 5 — Response Generation
+
+The selected tool returns structured data to the frontend.
+
+Examples include:
+
+- Updated interaction fields
+- HCP details
+- Interaction summaries
+- AI-generated follow-up recommendations
+
+---
+
+### Step 6 — Frontend Update
+
+The React frontend automatically updates:
+
+- CRM interaction form
+- AI Assistant chat
+- Follow-up recommendation panel
+
+without requiring manual data entry.
+
+---
+
+# Installation
+
+## Prerequisites
+
+Before running the project, ensure the following software is installed:
+
+- Python 3.11+
+- Node.js 18+
+- PostgreSQL
+- Git
+
+---
+
+## Backend Setup
+
+Clone the repository:
+
+```bash
+git clone https://github.com/<your-username>/AI-First-CRM-HCP.git
+```
+
+Navigate to the backend folder:
+
+```bash
+cd backend
+```
+
+Create a virtual environment:
+
+```bash
+python -m venv venv
+```
+
+Activate the virtual environment.
+
+macOS/Linux:
+
+```bash
+source venv/bin/activate
+```
+
+Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start the backend server:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Backend URL:
+
+```
+http://127.0.0.1:8000
+```
+
+Swagger Documentation:
+
+```
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## Frontend Setup
+
+Navigate to the frontend directory:
+
+```bash
+cd frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the React application:
+
+```bash
+npm run dev
+```
+
+Frontend URL:
+
+```
+http://localhost:5173
+```
+
+---
+
+# Database Configuration
+
+Create a PostgreSQL database.
+
+Update the database connection in the backend configuration file with your PostgreSQL credentials.
+
+After configuring the database, start the FastAPI server.
+
+The required tables will be created automatically by SQLAlchemy.
+
+---
+
+# API Endpoints
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/agent/chat` | AI Assistant endpoint |
+| POST | `/hcp` | Create Healthcare Professional |
+| GET | `/hcp/{id}` | Retrieve HCP details |
+| POST | `/interaction` | Save interaction |
+| GET | `/interaction/{id}` | Retrieve interaction |
