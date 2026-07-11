@@ -21,4 +21,8 @@ class CRMState(TypedDict):
     intent: Optional[str]
 
     interaction: Optional[Any]
+    
+    doctor: Any
+
+    summary: Optional[str]
 

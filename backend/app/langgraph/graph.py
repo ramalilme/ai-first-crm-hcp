@@ -3,6 +3,8 @@ from app.langgraph.router_node import route_intent_node
 from app.langgraph.edit_nodes import edit_interaction_node
 from app.langgraph.state import CRMState
 from app.langgraph.followup_node import followup_node
+from app.langgraph.search_node import search_hcp_node
+from app.langgraph.summarize_node import summarize_node
 from app.langgraph.nodes import (
     extract_node,
     find_hcp_node,
@@ -19,6 +21,14 @@ builder.add_node(
     "followup",
     followup_node,
 )
+builder.add_node(
+    "search_hcp",
+    search_hcp_node,
+)
+builder.add_node(
+    "summarize",
+    summarize_node,
+)
 
 builder.set_entry_point("router")
 
@@ -34,7 +44,13 @@ def route_after_router(state: CRMState):
 
     if state["intent"] == "followup_recommendation":
         return "followup"
-
+    
+    if state["intent"] == "search_hcp":
+        return "search_hcp"
+    
+    if state["intent"] == "summarize_interaction":
+        return "summarize"
+    
     return END
 
 
@@ -45,6 +61,8 @@ builder.add_conditional_edges(
         "extract": "extract",
         "edit_interaction": "edit_interaction",
         "followup": "followup",
+        "search_hcp": "search_hcp",
+        "summarize": "summarize",
         END: END,
     },
 )
@@ -52,5 +70,8 @@ builder.add_edge("extract", "find_hcp")
 builder.add_edge("find_hcp", "save_interaction")
 builder.add_edge("save_interaction", END)
 builder.add_edge("followup", END)
+builder.add_edge("search_hcp", END)
+builder.add_edge("summarize", END)
+
 
 crm_graph = builder.compile()

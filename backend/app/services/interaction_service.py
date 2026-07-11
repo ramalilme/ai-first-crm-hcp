@@ -88,8 +88,23 @@ def update_interaction_from_ai(
     if extraction.summary is not None:
         interaction.summary = extraction.summary
 
+    if extraction.attendees is not None:
+        interaction.attendees = extraction.attendees
+
+    if extraction.materials_shared is not None:
+        interaction.materials_shared = extraction.materials_shared
+
+    if extraction.samples_distributed is not None:
+        interaction.samples_distributed = extraction.samples_distributed
+
     if extraction.sentiment is not None:
         interaction.sentiment = extraction.sentiment
+
+    if extraction.outcomes is not None:
+        interaction.outcomes = extraction.outcomes
+
+    if extraction.follow_up_actions is not None:
+        interaction.follow_up_actions = extraction.follow_up_actions
 
     if extraction.follow_up_date is not None:
         text = extraction.follow_up_date.lower()
